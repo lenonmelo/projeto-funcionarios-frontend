@@ -25,14 +25,6 @@ export const useCargo = defineStore("cargo", () => {
  
   function storeCargo() {
     if (loading.value) return;
- 
-    //Campos obrigatórios
-    if (form.titulo == "") {
-      alert("O campos Título é obrigatórios");
-      loading.value = false;
-      return false;
-    }
-
     loading.value = true;
     errors.value = {};
 
@@ -42,8 +34,8 @@ export const useCargo = defineStore("cargo", () => {
         router.push({ name: "cargos.index" });
       })
       .catch((error) => {
-        if(error.response.data.status == 'error'){
-          alert(error.response.data.message);
+        if (error.response.status === 422) {
+          errors.value = error.response.data.errors;
         }
       })
       .finally(() => (loading.value = false));
@@ -52,13 +44,6 @@ export const useCargo = defineStore("cargo", () => {
   function updateCargo(cargo) {
     if (loading.value) return;
    
-    //Campos obrigatórios
-    if (form.titulo == "") {
-      alert("O campos Título é obrigatórios");
-      loading.value = false;
-      return false;
-    }
-    
     loading.value = true;
     errors.value = {};
    
@@ -68,8 +53,8 @@ export const useCargo = defineStore("cargo", () => {
         router.push({ name: "cargos.index" });
       })
       .catch((error) => {
-        if(error.response.data.status == 'error'){
-          alert(error.response.data.message);
+        if (error.response.status === 422) {
+          errors.value = error.response.data.errors;
         }
       })
       .finally(() => (loading.value = false));

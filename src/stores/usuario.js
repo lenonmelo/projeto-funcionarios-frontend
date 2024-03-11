@@ -44,96 +44,24 @@ export const useUsuario = defineStore("usuario", () => {
 
     loading.value = true;
     errors.value = {};
-
-    //Campos obrigatórios
-    if (form.nome == "") {
-      alert("O campos Nome é obrigatórios");
-      loading.value = false;
-      return false;
-    }
-    if (form.cargo_id == "") {
-      alert("O campos Cargo é obrigatórios");
-      loading.value = false;
-      return false;
-    }
-    if (form.departamento_id == "") {
-      alert("O campos Departamento é obrigatórios");
-      loading.value = false;
-      return false;
-    }
-    if (form.email == "") {
-      alert("O campos Email é obrigatórios");
-      loading.value = false;
-      return false;
-    }
-    if (form.senha == "") {
-      alert("O campos Senha é obrigatórios");
-      loading.value = false;
-      return false;
-    }
-    if (form.confirmar_senha == "") {
-      alert("O campos Confirmar Senha é obrigatórios");
-      loading.value = false;
-      return false;
-    }
-
-    if (form.senha != form.confirmar_senha) {
-      alert("Os campos senha e confirmar senha não conferêm");
-      loading.value = false;
-      return false;
-    }
-
+  
+      
     window.axios
       .post("usuarios", form)
       .then(() => {
         router.push({ name: "usuarios.index" });
       })
       .catch((error) => {
-        if (error.response.data.status == 'error') {
-          alert(error.response.data.message);
+        if (error.response.status === 422) {
+          errors.value = error.response.data.errors;
         }
       })
       .finally(() => (loading.value = false));
+  
   }
 
   function updateUsuario(usuario) {
     if (loading.value) return;
-
-    //Campos obrigatórios
-    if (form.nome == "") {
-      alert("O campos Nome é obrigatórios");
-      loading.value = false;
-      return false;
-    }
-    if (form.cargo_id == "") {
-      alert("O campos Cargo é obrigatórios");
-      loading.value = false;
-      return false;
-    }
-    if (form.departamento_id == "") {
-      alert("O campos Departamento é obrigatórios");
-      loading.value = false;
-      return false;
-    }
-    if (form.email == "") {
-      alert("O campos Email é obrigatórios");
-      loading.value = false;
-      return false;
-    }
-    if (form.senha != "") {
-      if (form.confirmar_senha == "") {
-        alert("O campos Confirmar Senha é obrigatórios");
-        loading.value = false;
-        return false;
-      }
-    }
-    if (form.senha != "" && form.confirmar_senha != "") {
-      if (form.senha != form.confirmar_senha) {
-        alert("Os campos senha e confirmar senha não conferêm");
-        loading.value = false;
-        return false;
-      }
-    }
 
     loading.value = true;
     errors.value = {};
@@ -144,8 +72,8 @@ export const useUsuario = defineStore("usuario", () => {
         router.push({ name: "usuarios.index" });
       })
       .catch((error) => {
-        if (error.response.data.status == 'error') {
-          alert(error.response.data.message);
+        if (error.response.status === 422) {
+          errors.value = error.response.data.errors;
         }
       })
       .finally(() => (loading.value = false));

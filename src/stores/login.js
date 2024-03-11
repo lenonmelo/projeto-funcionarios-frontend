@@ -22,7 +22,7 @@ export const useLogin = defineStore("login", () => {
     if (loading.value) return;
  
     loading.value = true;
-    errors.value = {};
+    errors.value = {};  
  
     return window.axios
       .post("auth/login", form)
@@ -30,8 +30,8 @@ export const useLogin = defineStore("login", () => {
         auth.login(response.data.data.token);
       })
       .catch((error) => {
-        if(error.response.data.status == 'error'){
-          alert(error.response.data.message);
+        if (error.response.status === 422) {
+          errors.value = error.response.data.errors;
         }
       })
       .finally(() => {

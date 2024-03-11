@@ -32,13 +32,6 @@ export const useCentroCusto = defineStore("centroCusto", () => {
   function storeCentroCusto() {
     if (loading.value) return;
 
-    //Campos obrigatórios
-    if (form.titulo == "") {
-      alert("O campos Título é obrigatórios");
-      loading.value = false;
-      return false;
-    }
-
     loading.value = true;
     errors.value = {};
 
@@ -48,8 +41,8 @@ export const useCentroCusto = defineStore("centroCusto", () => {
         router.push({ name: "centrosCusto.index" });
       })
       .catch((error) => {
-        if(error.response.data.status == 'error'){
-          alert(error.response.data.message);
+        if (error.response.status === 422) {
+          errors.value = error.response.data.errors;
         }
       })
       .finally(() => (loading.value = false));
@@ -61,21 +54,14 @@ export const useCentroCusto = defineStore("centroCusto", () => {
     loading.value = true;
     errors.value = {};
 
-    //Campos obrigatórios
-    if (form.titulo == "") {
-      alert("O campos Título é obrigatórios");
-      loading.value = false;
-      return false;
-    }
-
     window.axios
       .put(`centrosCusto/${centroCusto.id}`, form)
       .then(() => {
         router.push({ name: "centrosCusto.index" });
       })
       .catch((error) => {
-        if(error.response.data.status == 'error'){
-          alert(error.response.data.message);
+        if (error.response.status === 422) {
+          errors.value = error.response.data.errors;
         }
       })
       .finally(() => (loading.value = false));

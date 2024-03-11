@@ -40,18 +40,6 @@ export const useDepartamento = defineStore("departamento", () => {
   function storeDepartamento() {
     if (loading.value) return;
  
-     //Campos obrigatórios
-     if (form.titulo == "") {
-      alert("O campos Título é obrigatórios");
-      loading.value = false;
-      return false;
-    }
-    if (form.centro_custo_id == "") {
-      alert("O campos Centro de custo é obrigatórios");
-      loading.value = false;
-      return false;
-    }
-
     loading.value = true;
     errors.value = {};
  
@@ -61,8 +49,8 @@ export const useDepartamento = defineStore("departamento", () => {
         router.push({ name: "departamentos.index" });
       })
       .catch((error) => {
-        if(error.response.data.status == 'error'){
-          alert(error.response.data.message);
+        if (error.response.status === 422) {
+          errors.value = error.response.data.errors;
         }
       })
       .finally(() => (loading.value = false));
@@ -71,18 +59,6 @@ export const useDepartamento = defineStore("departamento", () => {
   function updateDepartamento(departamento) {
     if (loading.value) return;
 
-    //Campos obrigatórios
-    if (form.titulo == "") {
-      alert("O campos Título é obrigatórios");
-      loading.value = false;
-      return false;
-    }
-    if (form.centro_custo_id == "") {
-      alert("O campos Centro de custo é obrigatórios");
-      loading.value = false;
-      return false;
-    }
-   
     loading.value = true;
     errors.value = {};
    
@@ -92,8 +68,8 @@ export const useDepartamento = defineStore("departamento", () => {
         router.push({ name: "departamentos.index" });
       })
       .catch((error) => {
-        if(error.response.data.status == 'error'){
-          alert(error.response.data.message);
+        if (error.response.status === 422) {
+          errors.value = error.response.data.errors;
         }
       })
       .finally(() => (loading.value = false));
